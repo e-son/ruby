@@ -18,6 +18,6 @@ module ESON
       @data = data
     end
     attr_accessor :id
-    attr_accesor :data
+    attr_accessor :data
   end
 end
