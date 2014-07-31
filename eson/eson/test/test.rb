@@ -12,3 +12,9 @@ ESON.registerTag("aaa/aaa",{})
 p ESON.resolveTag("aaa")
 ESON.deleteTag("aaa")
 p ESON.resolveTag("aaa")
+
+
+
+t = ESON::Tag.new("aaa/aaa",47)
+
+p ESON.generate(t)

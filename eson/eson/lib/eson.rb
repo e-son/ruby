@@ -55,6 +55,7 @@ module ESON
   require_relative 'eson/common'
   require_relative 'ESON/tag'
   require_relative 'ESON/registry'
+  require_relative 'ESON/generate'
 
   class << self
     attr_accessor :tags
