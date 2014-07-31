@@ -14,7 +14,16 @@ ESON.deleteTag("aaa")
 p ESON.resolveTag("aaa")
 
 
+f = Proc.new do |dist, *args|
+  p "TEST"
+end
 
-t = ESON::Tag.new("aaa/aaa",47)
+ESON.registerTag("aaa",{})
+ESON.registerTag("aaa/aaa",{})
+ESON.registerTag("aaa/aaa/aaa",f)
 
+ESON.resolveTag("aaa/aaa/aaa").call(f)
+
+
+t = ESON::Tag.new("foo", 47)
 p ESON.generate(t)

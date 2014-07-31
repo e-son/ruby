@@ -29,68 +29,77 @@ module ESON
   end
 
   private
-  def self._stringify(value, prefix)
+  def self._generate(value, prefix)
+
     notObject=[Fixnum, Float, String, NilClass, TrueClass, FalseClass, Proc]
 
-    unless notObject.include?value.class
-      if value.respond_to?("to_eson")
-        return _stringify(value.to_eson(), prefix)
 
+    #we are interested only in objects not mentioned in notObject array
+    unless notObject.include?value.class
+
+      # Object can provide custom value to stringify
+      if value.respond_to?("to_eson")
+        return _generate(value.to_eson(), prefix)
+
+      # Tag
       elsif value.is_a?ESON::Tag
         prefix.push("#", value.id, ' ')
-        unless _stringify(value.data, prefix)
+        unless _generate(value.data, prefix)
           prefix.push("null")
         end
-
+      # Array
       elsif value.is_a?Array
-        prefix.push("[")
-        comma = false
+        prefix.push("[")  # Open array
+        comma = false # There's no comma before first element
         for x in value
-          if comma
-            prefix.push ','
-          end
-          unless _stringify(x, prefix)
+          if comma then prefix.push ',' end
+          unless _generate(x, prefix)
+            # Inside tags, unserializable values are printed like null-s
             prefix.push("null")
           end
-          comma = true
+          comma = true  # Separate next element
         end
-        prefix.push("]")
-        
+        prefix.push("]")  # Close object
+
+      # Otherwise, object is supposed to be a hash (unordered map)
       elsif value.is_a?Hash
-        prefix.push("{")
-        comma = false
+        prefix.push("{")  # Open object
+        comma = false # There's no comma before first element
         value.each do | k, v |
+          # To effectively avoid unserializable values,
+          # here is some repetitive code which inspects them
           unless notObject.include?v.class
-            if comma
-              prefix.push(',')
-            end
+            # Most of the objects should be serializable
+            if comma then prefix.push(',') end
             prefix.push(JSONGenerateWrap(k),':')
-            unless _stringify(v, prefix)
-              if comma
-                prefix.pop()
-              end
+            unless _generate(v, prefix)
+              # This happens only if toESON / toJSON returns unserializable.
+              # Supposing this won't happen, handling is not effective.
+              if comma then prefix.pop() end
               prefix.pop(2)
             else
-              comma = true
+              # Serialization was successful
+              comma = true  # Separate next element
             end
           else
+            # the rest of objects we can directly serialize by JSON
             str = JSONGenerateWrap(v)
             unless str.nil?
-              if comma
-                prefix.push(',')
-              end
+              if comma then prefix.push(',') end
               prefix.push(JSONGenerateWrap(k))
               prefix.push(":", str)
-              comma = true
+              comma = true  # Separate next element
             end
           end
         end
-        prefix.push("}")
+        prefix.push("}")  # Close object
 
+      # Support JSON's custom value
       elsif value.respond_to?("to_json")
-        return _stringify(value.to_json(), prefix)
+        return _generate(value.to_json(), prefix)
       end
       return true
+    # All the other types are stringified like JSON
     else
       str = JSONGenerateWrap(value)
       unless str.nil?
@@ -102,9 +111,11 @@ module ESON
     end
   end
 
+  # Public generate function
+  # Initializes and concatenates list of output tokens
   def self.generate(value)
     l = []
-    if _stringify(value, l)
+    if _generate(value, l)
       return l.join('')
     else
       return nil
