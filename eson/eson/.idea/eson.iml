@@ -31,9 +31,7 @@
       <EXTENSION ID="org.jetbrains.plugins.ruby.motion.run.MotionSimulatorRunExtension" />
       <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="$MODULE_DIR$/test/test.rb" />
       <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="" />
-      <RunnerSettings RunnerId="RubyDebugRunner" />
       <RunnerSettings RunnerId="RubyRunner" />
-      <ConfigurationWrapper RunnerId="RubyDebugRunner" />
       <ConfigurationWrapper RunnerId="RubyRunner" />
       <method />
     </configuration>
@@ -90,18 +88,6 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-2.1.1" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="eson (v[path], /home/raf/git_veci/ESON-sysel/ruby/eson/eson) [path][gem]">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/eson/lib" />
-          <root url="file://$MODULE_DIR$/eson/.idea" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/eson/lib" />
-          <root url="file://$MODULE_DIR$/eson/.idea" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="rake (v10.3.2, RVM: ruby-2.1.1) [gem]" level="application" />
   </component>
 </module>
