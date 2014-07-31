@@ -1,5 +1,3 @@
-require_relative 'eson/common'
-require_relative 'ESON/tag'
 
 ##
 # = JavaScript Object Notation (ESON)
@@ -54,8 +52,12 @@ require_relative 'ESON/tag'
 #
 module ESON
   require_relative './ESON/version'
+  require_relative 'eson/common'
+  require_relative 'ESON/tag'
+  require_relative 'ESON/registry'
 
-  begin
-    require_relative './eson/pure'
+  class << self
+    attr_accessor :tags
   end
+  self.tags = {}
 end
