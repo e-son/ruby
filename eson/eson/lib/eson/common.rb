@@ -5,12 +5,12 @@ module ESON
   class << self
 
 
-    # If _object_ is string-like, parse the string and return the parsed result
+    # If _object_ is string-like, parse.rb the string and return the parsed result
     # as a Ruby data structure. Otherwise generate a ESON text from the Ruby
     # data structure object and return it.
     #
-    # The _opts_ argument is passed through to generate/parse respectively. See
-    # generate and parse for their documentation.
+    # The _opts_ argument is passed through to generate/parse.rb respectively. See
+    # generate and parse.rb for their documentation.
     def [](object, opts = {})
       if object.respond_to? :to_str
         ESON.parse(object.to_str, opts)
@@ -158,12 +158,12 @@ module ESON
   end
 
   # Parse the ESON document _source_ into a Ruby data structure and return it.
-  # The bang version of the parse method defaults to the more dangerous values
-  # for the _opts_ hash, so be sure only to parse trusted _source_ documents.
+  # The bang version of the parse.rb method defaults to the more dangerous values
+  # for the _opts_ hash, so be sure only to parse.rb trusted _source_ documents.
   #
   # _opts_ can have the following keys:
   # * *max_nesting*: The maximum depth of nesting allowed in the parsed data
-  #   structures. Enable depth checking with :max_nesting => anInteger. The parse!
+  #   structures. Enable depth checking with :max_nesting => anInteger. The parse.rb!
   #   methods defaults to not doing max depth checking: This can be dangerous
   #   if someone wants to fill up your stack.
   # * *allow_nan*: If set to true, allow NaN, Infinity, and -Infinity in
@@ -459,12 +459,12 @@ module ::Kernel
     nil
   end
 
-  # If _object_ is string-like, parse the string and return the parsed result as
+  # If _object_ is string-like, parse.rb the string and return the parsed result as
   # a Ruby data structure. Otherwise, generate a ESON text from the Ruby data
   # structure object and return it.
   #
-  # The _opts_ argument is passed through to generate/parse respectively. See
-  # generate and parse for their documentation.
+  # The _opts_ argument is passed through to generate/parse.rb respectively. See
+  # generate and parse.rb for their documentation.
   def ESON(object, *args)
     if object.respond_to? :to_str
       ESON.parse(object.to_str, args.first)

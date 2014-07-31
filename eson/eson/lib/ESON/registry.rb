@@ -8,7 +8,7 @@
 #
 # Tag parsing handler is a function bound to the tag identifier, which takes
 # parsed data and returns object that is result of tag parsing.
-# They are used by standard parse strategy.
+# They are used by standard parse.rb strategy.
 
 
 # Tag tree

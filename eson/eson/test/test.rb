@@ -3,7 +3,7 @@ require_relative "../lib/eson"
 
 #puts(ESON.generate(['aaa',"aaaaa",32]))
 #puts(ESON.generate({'aaa' => 11}))
-#puts(ESON.parse("[432]"))
+#puts(ESON.parse.rb("[432]"))
 x = ESON::Tag.new(10,20)
 puts(x.id)
 
@@ -27,3 +27,9 @@ ESON.resolveTag("aaa/aaa/aaa").call(f)
 
 t = ESON::Tag.new("foo", 47)
 p ESON.generate(t)
+
+p ESON.generate([t])
+p ESON.generate({"aaa" => t})
+
+
+p JSON.parse("[\"aaa\"]")

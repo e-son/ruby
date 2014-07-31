@@ -2,7 +2,7 @@ require 'strscan'
 
 module ESON
   module Pure
-    # This class implements the ESON parser that is used to parse a ESON string
+    # This class implements the ESON parser that is used to parse.rb a ESON string
     # into a Ruby data structure.
     class Parser < StringScanner
       STRING                = /" ((?:[^\x0-\x1f"\\] |

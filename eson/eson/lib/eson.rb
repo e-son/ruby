@@ -3,7 +3,7 @@
 # = JavaScript Object Notation (ESON)
 #
 # ESON is a lightweight data-interchange format. It is easy for us
-# humans to read and write. Plus, equally simple for machines to generate or parse.
+# humans to read and write. Plus, equally simple for machines to generate or parse.rb.
 # ESON is completely language agnostic, making it the ideal interchange format.
 #
 # Built on two universally available structures:
@@ -14,12 +14,12 @@
 #
 # == Parsing ESON
 #
-# To parse a ESON string received by another application or generated within
+# To parse.rb a ESON string received by another application or generated within
 # your existing application:
 #
 #   require 'eson'
 #
-#   my_hash = ESON.parse('{"hello": "goodbye"}')
+#   my_hash = ESON.parse.rb('{"hello": "goodbye"}')
 #   puts my_hash["hello"] => "goodbye"
 #
 # Notice the extra quotes <tt>''</tt> around the hash notation. Ruby expects
