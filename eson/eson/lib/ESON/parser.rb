@@ -1,5 +1,3 @@
-require_relative '../eson'
-
 # =======
 # Parsing
 # =======
@@ -293,7 +291,6 @@ module ESON
   def self.pure_parse(str)
     p = ESON::Parser.new(str)
     p.tag_strategy = Strategies.ignore_tag_strategy
-    p p.tag_strategy.call("id", "data")
     p.parse()
   end
 
@@ -306,8 +303,4 @@ module ESON
   end
 end
 
-
-ESON.registerTag("marha",Proc.new{|arg| p "AHOJ"})
-
-p ESON.struct_parse('{"medved" : [#marha 221, "sssss"]}')
 

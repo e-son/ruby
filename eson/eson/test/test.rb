@@ -33,3 +33,10 @@ p ESON.generate({"aaa" => t})
 
 
 p JSON.parse("[\"aaa\"]")
+
+
+ESON.registerTag("tag47",Proc.new{|arg| "TEST"})
+
+p ESON.parse('{"medved" : [#tag47 221, "sssss"]}')
+p ESON.struct_parse('{"medved" : [#ssss 221, "sssss"]}')
+p ESON.pure_parse('{"medved" : [#ssss 221, "sssss"]}')
