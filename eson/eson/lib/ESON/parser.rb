@@ -21,15 +21,7 @@ require_relative '../eson'
 # Ignores tags.
 
 
-ESON.registerTag("aaa","bbb")
-ESON.resolveTag("aaa")
 
-x = ESON.tags
-
-#p = Strategies.new
-#p::make_standard_strategy
-
-#p Strategies.make_standard_strategy.call(struct_tag_strategy).call("aaa","bbb")
 module Strategies
 
     @@ignore_tag_strategy = Proc.new {|id, data|
@@ -80,10 +72,15 @@ module ESON
   class Parser
     attr_accessor :tag_strategy
 
+    def JSONParseWrapper(str)
+      str = '[' + str + ']'
+      JSON.parse(str)[0]
+    end
+
     def initialize(str)
       @list = []
       @pos = 0
-      @tag_strategy = Strategies.make_standard_tag_strategy().call()
+      @tag_resolver = Strategies.make_standard_tag_strategy().call()
       tokenize(str)
     end
 
@@ -92,15 +89,17 @@ module ESON
     end
 
     def tokenize(str)
-      regex = /([\s\x20]+|:|,|\{|\}|\[|\]|true|false|null|\#([^\s\x20]*)|"(([^"\\]|\\.)*)"|([-0-9][-0-9eE.]*))/m
 
-      list_with_spaces = str.split(regex)
+      #WARNING REGEX TO RECOGNIZE STRING MAY NOT BE OK
+      regex =  /[\s\x20]+|:|,|\{|\}|\[|\]|true|false|null|[-0-9][-0-9eE.]*|#[^\s\x20]*|"\w*"/m
+
+      list_with_spaces = str.scan(regex)
       check_sum = 0
       for x in list_with_spaces
         check_sum += x.length
-        #unless x =~ /^[\s ]+$/
-        @list.push(x)
-        #end
+        unless x =~ /^[\s ]+$/
+          @list.push(x)
+        end
       end
 
       p list_with_spaces
@@ -129,7 +128,12 @@ module ESON
         return self.parseList()
 
       elsif v[0] == "\""
-        return JSON.parse(v)
+        return JSONParseWrapper(v)
+
+      elsif v[0] == '#'
+        tag = v[1..v.length - 1]  # get tagged string
+        val = self.parseVal()  # again, value follows
+        return @tag_resolver.call(tag, val)
 
       elsif v[0] == 'n'
         return nil
@@ -141,7 +145,7 @@ module ESON
         return false
 
       elsif v[0] =~ /^[-0-9]$/
-        return JSON.parse(v)
+        return JSONParseWrapper(v)
 
       else
         self.error("ERROR: Invalid token")
@@ -166,7 +170,7 @@ module ESON
           return result
         end
 
-        self.error("ERROR: Expected ',' or ']'") unless v == ','
+        self.error("ERROR: Expected ',' or ']'") unless v == ","
 
         x = self.parseVal()
         result.push(x)
@@ -181,17 +185,30 @@ module ESON
       if v == '}'
         return result
       end
+      self.error("ERROR: Expected string") unless v[0] == "\""
 
-      self.error("ERROR: Expected ',' or ']'") unless v == ','
-
-      v = @list[@pos]
-      @pos += 1
-      self.error("ERROR: Expected string") unless v[0] == '\""'
-
-      self.error ("ERROR: Expected ':'") unless @list[@pos] == ':'
+      self.error("ERROR: Expected ':'") unless @list[@pos] == ":"
       @pos += 1
 
-      result[JSON.parse(v)] = self.parseVal()
+      result[JSONParseWrapper(v)] = self.parseVal()
+
+      while true
+        v = @list[@pos]
+        @pos += 1
+
+        if v == '}'
+          return result
+        end
+
+        self.error("ERROR: Expected ',' or ']'") unless v == ","
+
+        self.error("ERROR: Expected string") unless v[0] == "\""
+
+        self.error("ERROR: Expected ':'") unless @list[@pos] == ":"
+        @pos += 1
+
+        result[JSONParseWrapper] = self.parseVal()
+      end
     end
   end
 
@@ -202,11 +219,8 @@ module ESON
   end
 end
 
-#p ESON.parse('[43]')
 
-regex = /([-0-9][-0-9eE.]*)|\[|\]|\:/m
+ESON.registerTag("marha",Proc.new{|arg| p "AHOJ"})
 
-str = "[43]"
-p str.scan(regex)
-
+p ESON.parse('{"medved" : [#marha 221, "sssss"]}')
 
