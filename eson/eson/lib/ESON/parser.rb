@@ -119,7 +119,7 @@ module ESON
     # Check that the string is composed of tokens and split it into them
     def tokenize(str)
 
-      #WARNING REGEX TO RECOGNIZE STRING MAY NOT BE OK
+      #TODO REGEX TO RECOGNIZE STRING MAY NOT BE OK
       # Regex to tokenize string
       regex =  /[\s\x20]+|:|,|\{|\}|\[|\]|true|false|null|[-0-9][-0-9eE.]*|#[^\s\x20]*|"\w*"/m
 
@@ -222,7 +222,7 @@ module ESON
         end
 
         # Otherwise, comma should follow
-        self.error("ERROR: Expected ',' or ']'") unless v == ","
+        self.error("ERROR: Expected ',' or ']'") unless v == ','
 
         x = self.parseVal() # Get next value
         result.push(x)  # And store it
@@ -245,7 +245,7 @@ module ESON
       self.error("ERROR: Expected string") unless v[0] == "\""
 
       # and continue with a semicolon
-      self.error("ERROR: Expected ':'") unless @list[@pos] == ":"
+      self.error("ERROR: Expected ':'") unless @list[@pos] == ':'
       @pos += 1
 
       # then the first value comes and is stored
@@ -261,7 +261,7 @@ module ESON
         end
 
         # Otherwise, comma should follow
-        self.error("ERROR: Expected ',' or ']'") unless v == ","
+        self.error("ERROR: Expected ',' or ']'") unless v == ','
 
         # Get new key and check it is a string
         v = @list[@pos]
@@ -269,7 +269,7 @@ module ESON
         self.error("ERROR: Expected string") unless v[0] == "\""
 
         # Enforce semicolon
-        self.error("ERROR: Expected ':'") unless @list[@pos] == ":"
+        self.error("ERROR: Expected ':'") unless @list[@pos] == ':'
 
         # Finally, get the value
         result[JSONParseWrapper] = self.parseVal()

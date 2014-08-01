@@ -43,27 +43,27 @@ module ESON
 
       # Tag
       elsif value.is_a?ESON::Tag
-        prefix.push("#", value.id, ' ')
+        prefix.push('#', value.id, ' ')
         unless _generate(value.data, prefix)
-          prefix.push("null")
+          prefix.push('null')
         end
       # Array
       elsif value.is_a?Array
-        prefix.push("[")  # Open array
+        prefix.push('[')  # Open array
         comma = false # There's no comma before first element
         for x in value
           if comma then prefix.push ',' end
           unless _generate(x, prefix)
             # Inside tags, unserializable values are printed like null-s
-            prefix.push("null")
+            prefix.push('null')
           end
           comma = true  # Separate next element
         end
-        prefix.push("]")  # Close object
+        prefix.push(']')  # Close object
 
       # Otherwise, object is supposed to be a hash (unordered map)
       elsif value.is_a?Hash
-        prefix.push("{")  # Open object
+        prefix.push('{')  # Open object
         comma = false # There's no comma before first element
         value.each do | k, v |
           # To effectively avoid unserializable values,
@@ -87,15 +87,15 @@ module ESON
             unless str.nil?
               if comma then prefix.push(',') end
               prefix.push(JSONGenerateWrap(k))
-              prefix.push(":", str)
+              prefix.push(':', str)
               comma = true  # Separate next element
             end
           end
         end
-        prefix.push("}")  # Close object
+        prefix.push('}')  # Close object
 
       # Support JSON's custom value
-      elsif value.respond_to?("to_json")
+      elsif value.respond_to?('to_json')
         return _generate(value.to_json(), prefix)
       end
       return true

@@ -51,14 +51,15 @@
 #   1.to_eson => "1"
 #
 module ESON
+  class << self
+    attr_accessor :tags
+  end
+  self.tags = {}
+
   require_relative './ESON/version'
   require_relative 'ESON/tag'
   require_relative 'ESON/registry'
   require_relative 'ESON/generate'
   require_relative 'ESON/parser'
-
-  class << self
-    attr_accessor :tags
-  end
-  self.tags = {}
+  require_relative 'ESON/core_tags'
 end

@@ -68,7 +68,7 @@ module ESON
     for t in tokens
       # 'cur' should be a registered namespace, so we can get its child
       if cur.nil?
-        raise "ERROR: Parent namespace not registered"
+        raise 'ERROR: Parent namespace not registered'
       end
       last = cur
       cur = cur[t]
