@@ -1,4 +1,4 @@
-require_relative "../lib/eson"
+require_relative '../lib/eson'
 
 
 #puts(ESON.generate(['aaa',"aaaaa",32]))
@@ -32,11 +32,10 @@ p ESON.generate([t])
 p ESON.generate({"aaa" => t})
 
 
-p JSON.parse("[\"aaa\"]")
-
-
 ESON.registerTag("tag47",Proc.new{|arg| "TEST"})
 
 p ESON.parse('{"medved" : [#tag47 221, "sssss"]}')
 p ESON.struct_parse('{"medved" : [#ssss 221, "sssss"]}')
 p ESON.pure_parse('{"medved" : [#ssss 221, "sssss"]}')
+
+p ESON.parse(ESON.generate(['aaaa','vvvv']))
